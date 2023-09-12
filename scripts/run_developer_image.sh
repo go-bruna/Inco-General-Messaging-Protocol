@@ -5,8 +5,8 @@ set -Eeuo pipefail
 # in /config folder
 
 # init node
-echo "setupping ..."
-./setup.sh
+echo "setuping ..."
+/home/ubuntu/Inco-chain/setup.sh
 
 # generate keys
 echo "generating keys ..."

@@ -144,6 +144,10 @@ import (
 	"github.com/evmos/evmos/v9/x/vesting"
 	vestingkeeper "github.com/evmos/evmos/v9/x/vesting/keeper"
 	vestingtypes "github.com/evmos/evmos/v9/x/vesting/types"
+
+	"github.com/evmos/evmos/v9/x/callback"
+	callbackkeeper "github.com/evmos/evmos/v9/x/callback/keeper"
+	callbacktypes "github.com/evmos/evmos/v9/x/callback/types"
 )
 
 func init() {
@@ -204,6 +208,7 @@ var (
 		claims.AppModuleBasic{},
 		recovery.AppModuleBasic{},
 		revenue.AppModuleBasic{},
+		callback.AppModuleBasic{},
 	)
 
 	// module account permissions
@@ -219,6 +224,7 @@ var (
 		erc20types.ModuleName:          {authtypes.Minter, authtypes.Burner},
 		claimstypes.ModuleName:         nil,
 		incentivestypes.ModuleName:     {authtypes.Minter, authtypes.Burner},
+		callbacktypes.ModuleName:       nil,
 	}
 
 	// module accounts that are allowed to receive tokens
@@ -272,6 +278,7 @@ type Evmos struct {
 	// make scoped keepers public for test purposes
 	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
+	ScopedCallbackKeeper capabilitykeeper.ScopedKeeper
 
 	// Ethermint keepers
 	EvmKeeper       *evmkeeper.Keeper
@@ -286,6 +293,8 @@ type Evmos struct {
 	VestingKeeper    vestingkeeper.Keeper
 	RecoveryKeeper   *recoverykeeper.Keeper
 	RevenueKeeper    revenuekeeper.Keeper
+
+	CallbackKeeper *callbackkeeper.Keeper
 
 	// the module manager
 	mm *module.Manager
@@ -342,7 +351,7 @@ func NewEvmos(
 		// evmos keys
 		inflationtypes.StoreKey, erc20types.StoreKey, incentivestypes.StoreKey,
 		epochstypes.StoreKey, claimstypes.StoreKey, vestingtypes.StoreKey,
-		revenuetypes.StoreKey,
+		revenuetypes.StoreKey, callbacktypes.StoreKey,
 	)
 
 	// Add the EVM transient store key
@@ -370,6 +379,7 @@ func NewEvmos(
 
 	scopedIBCKeeper := app.CapabilityKeeper.ScopeToModule(ibchost.ModuleName)
 	scopedTransferKeeper := app.CapabilityKeeper.ScopeToModule(ibctransfertypes.ModuleName)
+	scopedCallbackKeeper := app.CapabilityKeeper.ScopeToModule(callbacktypes.ModuleName)
 
 	// Applications that wish to enforce statically created ScopedKeepers should call `Seal` after creating
 	// their scoped modules in `NewApp` with `ScopeToModule`
@@ -507,7 +517,7 @@ func NewEvmos(
 	// transferKeeper.SendPacket -> claim.SendPacket -> recovery.SendPacket -> channel.SendPacket
 
 	// RecvPacket, message that originates from core IBC and goes down to app, the flow is the otherway
-	// channel.RecvPacket -> recovery.OnRecvPacket -> claim.OnRecvPacket -> transfer.OnRecvPacket
+	// channel.RecvPacket -> callback.OnRecvPacket -> recovery.OnRecvPacket -> claim.OnRecvPacket -> transfer.OnRecvPacket
 
 	app.TransferKeeper = ibctransferkeeper.NewKeeper(
 		appCodec, keys[ibctransfertypes.StoreKey], app.GetSubspace(ibctransfertypes.ModuleName),
@@ -525,7 +535,18 @@ func NewEvmos(
 		app.ClaimsKeeper,
 	)
 
-	// Set the ICS4 wrappers for claims and recovery middlewares
+	app.CallbackKeeper = callbackkeeper.NewKeeper(
+		appCodec,
+		keys[ibctransfertypes.StoreKey],
+		app.GetSubspace(callbacktypes.ModuleName),
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedCallbackKeeper,
+	)
+
+	callbackIBCModule := callback.NewIBCModule(*app.CallbackKeeper)
+	// Set the ICS4 wrappers for claims, recovery and callback middlewares
+	app.CallbackKeeper.SetICS4Wrapper(app.IBCKeeper.ChannelKeeper)
 	app.RecoveryKeeper.SetICS4Wrapper(app.IBCKeeper.ChannelKeeper)
 	app.ClaimsKeeper.SetICS4Wrapper(app.RecoveryKeeper)
 	// NOTE: ICS4 wrapper for Transfer Keeper already set
@@ -547,6 +568,7 @@ func NewEvmos(
 	// Create static IBC router, add transfer route, then set and seal it
 	ibcRouter := porttypes.NewRouter()
 	ibcRouter.AddRoute(ibctransfertypes.ModuleName, transferStack)
+	ibcRouter.AddRoute(callbacktypes.ModuleName, callbackIBCModule)
 	app.IBCKeeper.SetRouter(ibcRouter)
 
 	// create evidence keeper with router
@@ -599,6 +621,7 @@ func NewEvmos(
 		vesting.NewAppModule(app.VestingKeeper, app.AccountKeeper, app.BankKeeper, app.StakingKeeper),
 		recovery.NewAppModule(*app.RecoveryKeeper),
 		revenue.NewAppModule(app.RevenueKeeper, app.AccountKeeper),
+		callback.NewAppModule(appCodec, *app.CallbackKeeper, app.AccountKeeper, app.BankKeeper),
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -636,6 +659,7 @@ func NewEvmos(
 		incentivestypes.ModuleName,
 		recoverytypes.ModuleName,
 		revenuetypes.ModuleName,
+		callbacktypes.ModuleName,
 	)
 
 	// NOTE: fee market module must go last in order to retrieve the block gas used.
@@ -669,6 +693,7 @@ func NewEvmos(
 		incentivestypes.ModuleName,
 		recoverytypes.ModuleName,
 		revenuetypes.ModuleName,
+		callbacktypes.ModuleName,
 	)
 
 	// NOTE: The genutils module must occur after staking so that pools are
@@ -711,6 +736,7 @@ func NewEvmos(
 		revenuetypes.ModuleName,
 		// NOTE: crisis module must go at the end to check for invariants on each module
 		crisistypes.ModuleName,
+		callbacktypes.ModuleName,
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)
@@ -1029,6 +1055,7 @@ func initParamsKeeper(
 	paramsKeeper.Subspace(incentivestypes.ModuleName)
 	paramsKeeper.Subspace(recoverytypes.ModuleName)
 	paramsKeeper.Subspace(revenuetypes.ModuleName)
+	paramsKeeper.Subspace(callbacktypes.ModuleName)
 	return paramsKeeper
 }
 

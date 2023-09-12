@@ -133,7 +133,7 @@ cp ./zama_config.toml $HOME_EVMOSD/zama/config/
 cp ./private.ed25519 $HOME_EVMOSD/zama/keys/signature-keys
 cp ./public.ed25519 $HOME_EVMOSD/zama/keys/signature-keys
 
-echo "Your private keys:"
+echo "faculty head please solid picnic benefit hurt gloom flag transfer thrive zebra"
 $EVMOSD keys unsafe-export-eth-key mykey1 --keyring-backend test
 $EVMOSD keys unsafe-export-eth-key mykey2 --keyring-backend test
 

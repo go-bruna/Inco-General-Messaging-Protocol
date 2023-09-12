@@ -1,0 +1,16 @@
+syntax = "proto3";
+package evmos.v9.callback;
+
+option go_package = "github.com/evmos/evmos/v9/x/callback/types";
+
+message BlockInfo {
+	uint64 Height   = 1;
+	uint64 Time     = 2;
+	string ChainId  = 3;
+}
+  
+message WhoAmIResponse {
+	string Account      = 1;
+	BlockInfo BlockInfo = 2;
+}
+  
