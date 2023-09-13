@@ -5,6 +5,7 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "callback/params.proto";
+import "callback/test_data.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/evmos/evmos/v9/x/callback/types";
@@ -15,7 +16,17 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/evmos/v9/callback/params";
   }
-  // this line is used by starport scaffolding # 2
+  // Queries a TestData by id.
+	rpc TestData(QueryGetTestDataRequest) returns (QueryGetTestDataResponse) {
+		option (google.api.http).get = "/evmos/v9/callback/test_data/{id}";
+	}
+
+	// Queries a list of TestData items.
+	rpc TestDataAll(QueryAllTestDataRequest) returns (QueryAllTestDataResponse) {
+		option (google.api.http).get = "/evmos/v9/callback/test_data";
+	}
+
+// this line is used by starport scaffolding # 2
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -25,6 +36,23 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetTestDataRequest {
+	uint64 id = 1;
+}
+
+message QueryGetTestDataResponse {
+	TestData TestData = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllTestDataRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllTestDataResponse {
+	repeated TestData TestData = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3

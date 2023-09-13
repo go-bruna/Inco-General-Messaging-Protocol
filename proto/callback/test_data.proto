@@ -1,0 +1,12 @@
+syntax = "proto3";
+package evmos.v9.callback;
+
+option go_package = "github.com/evmos/evmos/v9/x/callback/types";
+
+message TestData {
+  uint64 id = 1;
+  uint64 originValue = 2; 
+  uint64 executedValue = 3; 
+  uint64 timestamp = 4; 
+  
+}
