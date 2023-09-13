@@ -539,9 +539,11 @@ func NewEvmos(
 		appCodec,
 		keys[ibctransfertypes.StoreKey],
 		app.GetSubspace(callbacktypes.ModuleName),
+		app.AccountKeeper,
 		app.IBCKeeper.ChannelKeeper,
 		&app.IBCKeeper.PortKeeper,
 		scopedCallbackKeeper,
+		app.EvmKeeper,
 	)
 
 	callbackIBCModule := callback.NewIBCModule(*app.CallbackKeeper)

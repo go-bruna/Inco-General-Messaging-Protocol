@@ -21,14 +21,16 @@ import (
 
 type (
 	Keeper struct {
-		cdc          codec.BinaryCodec
-		storeKey     sdk.StoreKey
-		paramstore   paramtypes.Subspace
-		ics4Wrapper  porttypes.ICS4Wrapper
-		scopedKeeper capabilitykeeper.ScopedKeeper
+		cdc           codec.BinaryCodec
+		storeKey      sdk.StoreKey
+		paramstore    paramtypes.Subspace
+		ics4Wrapper   porttypes.ICS4Wrapper
+		scopedKeeper  capabilitykeeper.ScopedKeeper
+		accountKeeper types.AccountKeeper
 
 		channelKeeper types.ChannelKeeper
 		portKeeper    types.PortKeeper
+		evmKeeper     types.EVMKeeper
 	}
 )
 
@@ -36,9 +38,11 @@ func NewKeeper(
 	cdc codec.BinaryCodec,
 	storeKey sdk.StoreKey,
 	ps paramtypes.Subspace,
+	ak types.AccountKeeper,
 	channelKeeper types.ChannelKeeper,
 	portKeeper types.PortKeeper,
 	scopedKeeper capabilitykeeper.ScopedKeeper,
+	evmKeeper types.EVMKeeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -49,6 +53,7 @@ func NewKeeper(
 		cdc:           cdc,
 		storeKey:      storeKey,
 		paramstore:    ps,
+		accountKeeper: ak,
 		channelKeeper: channelKeeper,
 		portKeeper:    portKeeper,
 		scopedKeeper:  scopedKeeper,
