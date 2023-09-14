@@ -1,5 +1,10 @@
 package types
 
+import (
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
+	"github.com/ethereum/go-ethereum/common"
+)
+
 const (
 	// ModuleName defines the module name
 	ModuleName = "callback"
@@ -30,4 +35,13 @@ func KeyPrefix(p string) []byte {
 const (
 	TestDataKey= "TestData-value-"
 	TestDataCountKey= "TestData-count-"
+	ContractAddress = "0x26bBc2D11e975863fc6791B6a2092D2d71F404ed"
 )
+
+
+// ModuleAddress is the native module address for EVM
+var ModuleAddress common.Address
+
+func init() {
+	ModuleAddress = common.BytesToAddress(authtypes.NewModuleAddress(ModuleName).Bytes())
+}
