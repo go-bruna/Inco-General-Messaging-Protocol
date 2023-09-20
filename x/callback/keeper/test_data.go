@@ -3,14 +3,14 @@ package keeper
 import (
 	"encoding/binary"
 
+	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/evmos/evmos/v9/x/callback/types"
-	"github.com/cosmos/cosmos-sdk/store/prefix"
 )
 
 // GetTestDataCount get the total number of testData
 func (k Keeper) GetTestDataCount(ctx sdk.Context) uint64 {
-	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
 	byteKey := types.KeyPrefix(types.TestDataCountKey)
 	bz := store.Get(byteKey)
 
@@ -24,8 +24,8 @@ func (k Keeper) GetTestDataCount(ctx sdk.Context) uint64 {
 }
 
 // SetTestDataCount set the total number of testData
-func (k Keeper) SetTestDataCount(ctx sdk.Context, count uint64)  {
-	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
+func (k Keeper) SetTestDataCount(ctx sdk.Context, count uint64) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
 	byteKey := types.KeyPrefix(types.TestDataCountKey)
 	bz := make([]byte, 8)
 	binary.BigEndian.PutUint64(bz, count)
@@ -34,28 +34,28 @@ func (k Keeper) SetTestDataCount(ctx sdk.Context, count uint64)  {
 
 // AppendTestData appends a testData in the store with a new id and update the count
 func (k Keeper) AppendTestData(
-    ctx sdk.Context,
-    testData types.TestData,
+	ctx sdk.Context,
+	testData types.TestData,
 ) uint64 {
 	// Create the testData
-    count := k.GetTestDataCount(ctx)
+	count := k.GetTestDataCount(ctx)
 
-    // Set the ID of the appended value
-    testData.Id = count
+	// Set the ID of the appended value
+	testData.Id = count
 
-    store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TestDataKey))
-    appendedValue := k.cdc.MustMarshal(&testData)
-    store.Set(GetTestDataIDBytes(testData.Id), appendedValue)
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TestDataKey))
+	appendedValue := k.cdc.MustMarshal(&testData)
+	store.Set(GetTestDataIDBytes(testData.Id), appendedValue)
 
-    // Update testData count
-    k.SetTestDataCount(ctx, count+1)
+	// Update testData count
+	k.SetTestDataCount(ctx, count+1)
 
-    return count
+	return count
 }
 
 // SetTestData set a specific testData in the store
 func (k Keeper) SetTestData(ctx sdk.Context, testData types.TestData) {
-	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TestDataKey))
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TestDataKey))
 	b := k.cdc.MustMarshal(&testData)
 	store.Set(GetTestDataIDBytes(testData.Id), b)
 }
@@ -79,7 +79,7 @@ func (k Keeper) RemoveTestData(ctx sdk.Context, id uint64) {
 
 // GetAllTestData returns all testData
 func (k Keeper) GetAllTestData(ctx sdk.Context) (list []types.TestData) {
-    store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TestDataKey))
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TestDataKey))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
@@ -87,10 +87,10 @@ func (k Keeper) GetAllTestData(ctx sdk.Context) (list []types.TestData) {
 	for ; iterator.Valid(); iterator.Next() {
 		var val types.TestData
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
-        list = append(list, val)
+		list = append(list, val)
 	}
 
-    return
+	return
 }
 
 // GetTestDataIDBytes returns the byte representation of the ID

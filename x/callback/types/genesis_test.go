@@ -19,49 +19,49 @@ func TestGenesisState_Validate(t *testing.T) {
 			valid:    true,
 		},
 		{
-			desc:     "valid genesis state",
+			desc: "valid genesis state",
 			genState: &types.GenesisState{
 
 				TestDataList: []types.TestData{
-	{
-		Id: 0,
-	},
-	{
-		Id: 1,
-	},
-},
-TestDataCount: 2,
-// this line is used by starport scaffolding # types/genesis/validField
+					{
+						Id: 0,
+					},
+					{
+						Id: 1,
+					},
+				},
+				TestDataCount: 2,
+				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
 		},
 		{
-	desc:     "duplicated testData",
-	genState: &types.GenesisState{
-		TestDataList: []types.TestData{
-			{
-				Id: 0,
+			desc: "duplicated testData",
+			genState: &types.GenesisState{
+				TestDataList: []types.TestData{
+					{
+						Id: 0,
+					},
+					{
+						Id: 0,
+					},
+				},
 			},
-			{
-				Id: 0,
-			},
+			valid: false,
 		},
-	},
-	valid:    false,
-},
-{
-	desc:     "invalid testData count",
-	genState: &types.GenesisState{
-		TestDataList: []types.TestData{
-			{
-				Id: 1,
+		{
+			desc: "invalid testData count",
+			genState: &types.GenesisState{
+				TestDataList: []types.TestData{
+					{
+						Id: 1,
+					},
+				},
+				TestDataCount: 0,
 			},
+			valid: false,
 		},
-		TestDataCount: 0,
-	},
-	valid:    false,
-},
-// this line is used by starport scaffolding # types/genesis/testcase
+		// this line is used by starport scaffolding # types/genesis/testcase
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
 			err := tc.genState.Validate()

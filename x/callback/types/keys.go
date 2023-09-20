@@ -33,11 +33,10 @@ func KeyPrefix(p string) []byte {
 }
 
 const (
-	TestDataKey= "TestData-value-"
-	TestDataCountKey= "TestData-count-"
-	ContractAddress = "0x26bBc2D11e975863fc6791B6a2092D2d71F404ed"
+	TestDataKey      = "TestData-value-"
+	TestDataCountKey = "TestData-count-"
+	ContractAddress  = "0x26bBc2D11e975863fc6791B6a2092D2d71F404ed"
 )
-
 
 // ModuleAddress is the native module address for EVM
 var ModuleAddress common.Address

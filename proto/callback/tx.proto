@@ -8,6 +8,7 @@ option go_package = "github.com/evmos/evmos/v9/x/callback/types";
 // Msg defines the Msg service.
 service Msg {
       rpc CallEvmAdd(MsgCallEvmAdd) returns (MsgCallEvmAddResponse);
+  rpc DeployContract(MsgDeployContract) returns (MsgDeployContractResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -20,6 +21,14 @@ message MsgCallEvmAdd {
 
 message MsgCallEvmAddResponse {
   uint64 result = 1;
+}
+
+message MsgDeployContract {
+  string creator = 1;
+}
+
+message MsgDeployContractResponse {
+  string address = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message

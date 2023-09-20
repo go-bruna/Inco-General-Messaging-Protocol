@@ -1,7 +1,7 @@
 package types
 
 import (
-"fmt"
+	"fmt"
 )
 
 // DefaultIndex is the default capability global index
@@ -11,7 +11,7 @@ const DefaultIndex uint64 = 1
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		TestDataList: []TestData{},
-// this line is used by starport scaffolding # genesis/types/default
+		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
 }
@@ -20,18 +20,18 @@ func DefaultGenesis() *GenesisState {
 // failure.
 func (gs GenesisState) Validate() error {
 	// Check for duplicated ID in testData
-testDataIdMap := make(map[uint64]bool)
-testDataCount := gs.GetTestDataCount()
-for _, elem := range gs.TestDataList {
-	if _, ok := testDataIdMap[elem.Id]; ok {
-		return fmt.Errorf("duplicated id for testData")
+	testDataIdMap := make(map[uint64]bool)
+	testDataCount := gs.GetTestDataCount()
+	for _, elem := range gs.TestDataList {
+		if _, ok := testDataIdMap[elem.Id]; ok {
+			return fmt.Errorf("duplicated id for testData")
+		}
+		if elem.Id >= testDataCount {
+			return fmt.Errorf("testData id should be lower or equal than the last id")
+		}
+		testDataIdMap[elem.Id] = true
 	}
-	if elem.Id >= testDataCount {
-		return fmt.Errorf("testData id should be lower or equal than the last id")
-	}
-	testDataIdMap[elem.Id] = true
-}
-// this line is used by starport scaffolding # genesis/types/validate
+	// this line is used by starport scaffolding # genesis/types/validate
 
 	return gs.Params.Validate()
 }
