@@ -8,7 +8,7 @@ log_level = "debug"
 db_path = "/tmp/zbc-oracle-db-contents"
 
 [release]
-db_path = "/var/zbc-oracle-db-contents"
+db_path = "/tmp/zbc-oracle-db-contents"
 
 [testing]
 db_path = "/tmp/zbc-oracle-db-testing"

@@ -15,11 +15,17 @@ func (k msgServer) CallEvmAdd(goCtx context.Context, msg *types.MsgCallEvmAdd) (
 	contract := types.GetContractAddress(msg.ContractAddress)
 	abi, err := ContractMetaData.GetAbi()
 	if err != nil {
-		return &types.MsgCallEvmAddResponse{}, nil
+		return &types.MsgCallEvmAddResponse{}, err
 	}
 
+	arg64, err := strconv.ParseUint(msg.Arg, 10, 64)
+	if err != nil {
+		return &types.MsgCallEvmAddResponse{}, err
+	}
+
+	arg32 := uint32(arg64)
 	// Call add function
-	resp, err := k.CallEVM(ctx, *abi, types.ModuleAddress, contract, true, msg.FuncName, msg.Arg)
+	resp, err := k.CallEVM(ctx, *abi, types.ModuleAddress, contract, true, msg.FuncName, arg32)
 	if err != nil {
 		return nil, err
 	}
