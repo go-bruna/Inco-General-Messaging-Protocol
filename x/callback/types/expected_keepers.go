@@ -26,7 +26,7 @@ type BankKeeper interface {
 	// Methods imported from bank should be defined here
 }
 
-// EVMKeeper defines the expected EVM keeper interface used on erc20
+// EVMKeeper defines the expected EVM keeper interface used on callback
 type EVMKeeper interface {
 	GetParams(ctx sdk.Context) evmtypes.Params
 	GetAccountWithoutBalance(ctx sdk.Context, addr common.Address) *statedb.Account

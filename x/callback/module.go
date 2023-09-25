@@ -21,6 +21,7 @@ import (
 	"github.com/evmos/evmos/v9/x/callback/keeper"
 	"github.com/evmos/evmos/v9/x/callback/types"
 
+	authkeeper "github.com/cosmos/cosmos-sdk/x/auth/keeper"
 	porttypes "github.com/cosmos/ibc-go/v3/modules/core/05-port/types"
 )
 
@@ -103,14 +104,14 @@ type AppModule struct {
 	AppModuleBasic
 
 	keeper        keeper.Keeper
-	accountKeeper types.AccountKeeper
+	accountKeeper authkeeper.AccountKeeper
 	bankKeeper    types.BankKeeper
 }
 
 func NewAppModule(
 	cdc codec.Codec,
 	keeper keeper.Keeper,
-	accountKeeper types.AccountKeeper,
+	accountKeeper authkeeper.AccountKeeper,
 	bankKeeper types.BankKeeper,
 ) AppModule {
 	return AppModule{
@@ -155,7 +156,7 @@ func (am AppModule) InitGenesis(ctx sdk.Context, cdc codec.JSONCodec, gs json.Ra
 	// Initialize global index to index in genesis state
 	cdc.MustUnmarshalJSON(gs, &genState)
 
-	InitGenesis(ctx, am.keeper, genState)
+	InitGenesis(ctx, am.keeper, am.accountKeeper, genState)
 
 	return []abci.ValidatorUpdate{}
 }

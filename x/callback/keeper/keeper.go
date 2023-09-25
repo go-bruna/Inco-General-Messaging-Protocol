@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/tendermint/tendermint/libs/log"
 
@@ -57,6 +58,7 @@ func NewKeeper(
 		channelKeeper: channelKeeper,
 		portKeeper:    portKeeper,
 		scopedKeeper:  scopedKeeper,
+		evmKeeper:     evmKeeper,
 	}
 }
 
@@ -136,4 +138,41 @@ func (k Keeper) InitGenesis(ctx sdk.Context, state types.GenesisState) {
 			panic(fmt.Sprintf("could not claim port capability: %v", err))
 		}
 	}
+}
+
+func (k Keeper) CallEvmAdd(ctx sdk.Context, creator string, contractAddr string, funcName string, arg string) (*types.MsgCallEvmAddResponse, error) {
+	contract := types.GetContractAddress(contractAddr)
+	abi, err := ContractMetaData.GetAbi()
+	if err != nil {
+		return &types.MsgCallEvmAddResponse{}, err
+	}
+
+	arg64, err := strconv.ParseUint(arg, 10, 64)
+	if err != nil {
+		return &types.MsgCallEvmAddResponse{}, err
+	}
+
+	arg32 := uint32(arg64)
+	// Call add function
+	resp, err := k.CallEVM(ctx, *abi, types.ModuleAddress, contract, true, funcName, arg32)
+	if err != nil || len(resp.Ret) == 0 {
+		return &types.MsgCallEvmAddResponse{}, err
+	}
+
+	result, err := strconv.Atoi(string(resp.Ret))
+	if err != nil {
+		return &types.MsgCallEvmAddResponse{}, err
+	}
+
+	ctx.EventManager().EmitEvents(
+		sdk.Events{
+			sdk.NewEvent(
+				types.EventTypeEncryptAdd,
+				sdk.NewAttribute(sdk.AttributeKeySender, creator),
+				sdk.NewAttribute(types.EventTypeEncryptAddResult, fmt.Sprintf("%d", result)),
+			),
+		},
+	)
+
+	return &types.MsgCallEvmAddResponse{Result: (uint64)(result)}, nil
 }

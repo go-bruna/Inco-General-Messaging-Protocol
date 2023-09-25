@@ -1,17 +1,14 @@
 package keeper
 
 import (
-	"encoding/json"
 	"math/big"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/evmos/ethermint/server/config"
 	evmtypes "github.com/evmos/ethermint/x/evm/types"
 
 	"github.com/evmos/evmos/v9/x/callback/types"
@@ -24,7 +21,7 @@ func (k Keeper) DeployIncoContract(
 ) (common.Address, error) {
 	abi, err := ContractMetaData.GetAbi()
 	ctorArgs, err := abi.Pack(
-		"Inco",
+		"",
 	)
 	if err != nil {
 		return common.Address{}, sdkerrors.Wrapf(types.ErrABIPack, "invalid %s", err.Error())
@@ -85,36 +82,36 @@ func (k Keeper) CallEVMWithData(
 		return nil, err
 	}
 
-	gasCap := config.DefaultGasCap
-	if commit {
-		args, err := json.Marshal(evmtypes.TransactionArgs{
-			From: &from,
-			To:   contract,
-			Data: (*hexutil.Bytes)(&data),
-		})
-		if err != nil {
-			return nil, sdkerrors.Wrapf(sdkerrors.ErrJSONMarshal, "failed to marshal tx args: %s", err.Error())
-		}
+	// gasCap := config.DefaultGasCap
+	// if commit {
+	// 	args, err := json.Marshal(evmtypes.TransactionArgs{
+	// 		From: &from,
+	// 		To:   contract,
+	// 		Data: (*hexutil.Bytes)(&data),
+	// 	})
+	// 	if err != nil {
+	// 		return nil, sdkerrors.Wrapf(sdkerrors.ErrJSONMarshal, "failed to marshal tx args: %s", err.Error())
+	// 	}
 
-		gasRes, err := k.evmKeeper.EstimateGas(sdk.WrapSDKContext(ctx), &evmtypes.EthCallRequest{
-			Args:   args,
-			GasCap: config.DefaultGasCap,
-		})
-		if err != nil {
-			return nil, err
-		}
-		gasCap = gasRes.Gas
-	}
+	// 	gasRes, err := k.evmKeeper.EstimateGas(sdk.WrapSDKContext(ctx), &evmtypes.EthCallRequest{
+	// 		Args:   args,
+	// 		GasCap: config.DefaultGasCap,
+	// 	})
+	// 	if err != nil {
+	// 		return nil, err
+	// 	}
+	// 	_ = gasRes.Gas * 5
+	// }
 
 	msg := ethtypes.NewMessage(
 		from,
 		contract,
 		nonce,
-		big.NewInt(0), // amount
-		gasCap,        // gasLimit
-		big.NewInt(0), // gasFeeCap
-		big.NewInt(0), // gasTipCap
-		big.NewInt(0), // gasPrice
+		big.NewInt(0),    // amount
+		(uint64)(400000), // gasLimit
+		big.NewInt(0),    // gasFeeCap
+		big.NewInt(0),    // gasTipCap
+		big.NewInt(0),    // gasPrice
 		data,
 		ethtypes.AccessList{}, // AccessList
 		!commit,               // isFake
