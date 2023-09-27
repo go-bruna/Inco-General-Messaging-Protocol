@@ -31,34 +31,12 @@ var (
 
 // ContractMetaData contains all meta data concerning the Contract contract.
 var ContractMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[{\"internalType\":\"uint32\",\"name\":\"value\",\"type\":\"uint32\"}],\"name\":\"add\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"decryptStore\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"decryptView\",\"outputs\":[{\"internalType\":\"uint32\",\"name\":\"\",\"type\":\"uint32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"reveal\",\"outputs\":[{\"internalType\":\"uint32\",\"name\":\"\",\"type\":\"uint32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"encryptedValue\",\"type\":\"bytes\"}],\"name\":\"store\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"testValue\",\"outputs\":[{\"internalType\":\"euint32\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]",
-	Bin: "0x608060405234801561000f575f80fd5b5061001a6064610021565b5f556100d4565b5f61002d826002610033565b92915050565b5f80835f1b8360f81b6040516020016100789291909182527fff0000000000000000000000000000000000000000000000000000000000000016602082015260210190565b60408051601f1981840301815291905280519091506100956100b6565b6020604d818385878301845afa6100aa575f80fd5b50505195945050505050565b60405180602001604052806001906020820280368337509192915050565b6103c8806100e15f395ff3fe608060405234801561000f575f80fd5b5060043610610060575f3560e01c80631dc0afe0146100645780632f59d16b146100865780638af5de7214610090578063a475b5dd146100a6578063b374012b146100b6578063cbe3a072146100c9575b5f80fd5b61006c6100ec565b60405163ffffffff90911681526020015b60405180910390f35b61008e6100fa565b005b6100985f5481565b60405190815260200161007d565b60025461006c9063ffffffff1681565b61008e6100c4366004610269565b61011e565b6100dc6100d73660046102d5565b610162565b604051901515815260200161007d565b5f6100f561019a565b905090565b61010261019a565b6002805463ffffffff191663ffffffff92909216919091179055565b61015c82828080601f0160208091040260200160405190810160405280939291908181526020018383808284375f920191909152506101a592505050565b5f555050565b6002545f9061017890839063ffffffff166102ff565b6002805463ffffffff191663ffffffff92909216919091179055506001919050565b5f6100f55f546101b7565b5f6101b18260026101c1565b92915050565b5f6101b182610217565b5f80838360f81b6040516020016101d992919061032f565b60408051601f1981840301815291905280519091506101f661024b565b60206042818385878301845afa61020b575f80fd5b50505195945050505050565b5f61022061024b565b828152602061022d61024b565b6020605b81838587845afa610240575f80fd5b505051949350505050565b60405180602001604052806001906020820280368337509192915050565b5f806020838503121561027a575f80fd5b823567ffffffffffffffff80821115610291575f80fd5b818501915085601f8301126102a4575f80fd5b8135818111156102b2575f80fd5b8660208285010111156102c3575f80fd5b60209290920196919550909350505050565b5f602082840312156102e5575f80fd5b813563ffffffff811681146102f8575f80fd5b9392505050565b63ffffffff81811683821601908082111561032857634e487b7160e01b5f52601160045260245ffd5b5092915050565b5f83515f5b8181101561034e5760208187018101518583015201610334565b506001600160f81b031993909316919092019081526001019291505056fea2646970667358221220f9bc4af812620c4aa75017c26b14216528a692dc2ad2460631d5d7805f93637a64736f6c637828302e382e32322d646576656c6f702e323032332e392e31392b636f6d6d69742e64633434663861640059",
+	ABI: "[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[{\"internalType\":\"uint32\",\"name\":\"value\",\"type\":\"uint32\"}],\"name\":\"add\",\"outputs\":[{\"internalType\":\"uint32\",\"name\":\"\",\"type\":\"uint32\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]",
 }
 
 // ContractABI is the input ABI used to generate the binding from.
 // Deprecated: Use ContractMetaData.ABI instead.
 var ContractABI = ContractMetaData.ABI
-
-// ContractBin is the compiled bytecode used for deploying new contracts.
-// Deprecated: Use ContractMetaData.Bin instead.
-var ContractBin = ContractMetaData.Bin
-
-// DeployContract deploys a new Ethereum contract, binding an instance of Contract to it.
-func DeployContract(auth *bind.TransactOpts, backend bind.ContractBackend) (common.Address, *types.Transaction, *Contract, error) {
-	parsed, err := ContractMetaData.GetAbi()
-	if err != nil {
-		return common.Address{}, nil, nil, err
-	}
-	if parsed == nil {
-		return common.Address{}, nil, nil, errors.New("GetABI returned nil")
-	}
-
-	address, tx, contract, err := bind.DeployContract(auth, *parsed, common.FromHex(ContractBin), backend)
-	if err != nil {
-		return common.Address{}, nil, nil, err
-	}
-	return address, tx, &Contract{ContractCaller: ContractCaller{contract: contract}, ContractTransactor: ContractTransactor{contract: contract}, ContractFilterer: ContractFilterer{contract: contract}}, nil
-}
 
 // Contract is an auto generated Go binding around an Ethereum contract.
 type Contract struct {
@@ -202,12 +180,12 @@ func (_Contract *ContractTransactorRaw) Transact(opts *bind.TransactOpts, method
 	return _Contract.Contract.contract.Transact(opts, method, params...)
 }
 
-// DecryptView is a free data retrieval call binding the contract method 0x1dc0afe0.
+// Add is a free data retrieval call binding the contract method 0xcbe3a072.
 //
-// Solidity: function decryptView() view returns(uint32)
-func (_Contract *ContractCaller) DecryptView(opts *bind.CallOpts) (uint32, error) {
+// Solidity: function add(uint32 value) view returns(uint32)
+func (_Contract *ContractCaller) Add(opts *bind.CallOpts, value uint32) (uint32, error) {
 	var out []interface{}
-	err := _Contract.contract.Call(opts, &out, "decryptView")
+	err := _Contract.contract.Call(opts, &out, "add", value)
 
 	if err != nil {
 		return *new(uint32), err
@@ -219,141 +197,16 @@ func (_Contract *ContractCaller) DecryptView(opts *bind.CallOpts) (uint32, error
 
 }
 
-// DecryptView is a free data retrieval call binding the contract method 0x1dc0afe0.
+// Add is a free data retrieval call binding the contract method 0xcbe3a072.
 //
-// Solidity: function decryptView() view returns(uint32)
-func (_Contract *ContractSession) DecryptView() (uint32, error) {
-	return _Contract.Contract.DecryptView(&_Contract.CallOpts)
+// Solidity: function add(uint32 value) view returns(uint32)
+func (_Contract *ContractSession) Add(value uint32) (uint32, error) {
+	return _Contract.Contract.Add(&_Contract.CallOpts, value)
 }
 
-// DecryptView is a free data retrieval call binding the contract method 0x1dc0afe0.
+// Add is a free data retrieval call binding the contract method 0xcbe3a072.
 //
-// Solidity: function decryptView() view returns(uint32)
-func (_Contract *ContractCallerSession) DecryptView() (uint32, error) {
-	return _Contract.Contract.DecryptView(&_Contract.CallOpts)
-}
-
-// Reveal is a free data retrieval call binding the contract method 0xa475b5dd.
-//
-// Solidity: function reveal() view returns(uint32)
-func (_Contract *ContractCaller) Reveal(opts *bind.CallOpts) (uint32, error) {
-	var out []interface{}
-	err := _Contract.contract.Call(opts, &out, "reveal")
-
-	if err != nil {
-		return *new(uint32), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new(uint32)).(*uint32)
-
-	return out0, err
-
-}
-
-// Reveal is a free data retrieval call binding the contract method 0xa475b5dd.
-//
-// Solidity: function reveal() view returns(uint32)
-func (_Contract *ContractSession) Reveal() (uint32, error) {
-	return _Contract.Contract.Reveal(&_Contract.CallOpts)
-}
-
-// Reveal is a free data retrieval call binding the contract method 0xa475b5dd.
-//
-// Solidity: function reveal() view returns(uint32)
-func (_Contract *ContractCallerSession) Reveal() (uint32, error) {
-	return _Contract.Contract.Reveal(&_Contract.CallOpts)
-}
-
-// TestValue is a free data retrieval call binding the contract method 0x8af5de72.
-//
-// Solidity: function testValue() view returns(uint256)
-func (_Contract *ContractCaller) TestValue(opts *bind.CallOpts) (*big.Int, error) {
-	var out []interface{}
-	err := _Contract.contract.Call(opts, &out, "testValue")
-
-	if err != nil {
-		return *new(*big.Int), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
-
-	return out0, err
-
-}
-
-// TestValue is a free data retrieval call binding the contract method 0x8af5de72.
-//
-// Solidity: function testValue() view returns(uint256)
-func (_Contract *ContractSession) TestValue() (*big.Int, error) {
-	return _Contract.Contract.TestValue(&_Contract.CallOpts)
-}
-
-// TestValue is a free data retrieval call binding the contract method 0x8af5de72.
-//
-// Solidity: function testValue() view returns(uint256)
-func (_Contract *ContractCallerSession) TestValue() (*big.Int, error) {
-	return _Contract.Contract.TestValue(&_Contract.CallOpts)
-}
-
-// Add is a paid mutator transaction binding the contract method 0xcbe3a072.
-//
-// Solidity: function add(uint32 value) returns(bool)
-func (_Contract *ContractTransactor) Add(opts *bind.TransactOpts, value uint32) (*types.Transaction, error) {
-	return _Contract.contract.Transact(opts, "add", value)
-}
-
-// Add is a paid mutator transaction binding the contract method 0xcbe3a072.
-//
-// Solidity: function add(uint32 value) returns(bool)
-func (_Contract *ContractSession) Add(value uint32) (*types.Transaction, error) {
-	return _Contract.Contract.Add(&_Contract.TransactOpts, value)
-}
-
-// Add is a paid mutator transaction binding the contract method 0xcbe3a072.
-//
-// Solidity: function add(uint32 value) returns(bool)
-func (_Contract *ContractTransactorSession) Add(value uint32) (*types.Transaction, error) {
-	return _Contract.Contract.Add(&_Contract.TransactOpts, value)
-}
-
-// DecryptStore is a paid mutator transaction binding the contract method 0x2f59d16b.
-//
-// Solidity: function decryptStore() returns()
-func (_Contract *ContractTransactor) DecryptStore(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _Contract.contract.Transact(opts, "decryptStore")
-}
-
-// DecryptStore is a paid mutator transaction binding the contract method 0x2f59d16b.
-//
-// Solidity: function decryptStore() returns()
-func (_Contract *ContractSession) DecryptStore() (*types.Transaction, error) {
-	return _Contract.Contract.DecryptStore(&_Contract.TransactOpts)
-}
-
-// DecryptStore is a paid mutator transaction binding the contract method 0x2f59d16b.
-//
-// Solidity: function decryptStore() returns()
-func (_Contract *ContractTransactorSession) DecryptStore() (*types.Transaction, error) {
-	return _Contract.Contract.DecryptStore(&_Contract.TransactOpts)
-}
-
-// Store is a paid mutator transaction binding the contract method 0xb374012b.
-//
-// Solidity: function store(bytes encryptedValue) returns()
-func (_Contract *ContractTransactor) Store(opts *bind.TransactOpts, encryptedValue []byte) (*types.Transaction, error) {
-	return _Contract.contract.Transact(opts, "store", encryptedValue)
-}
-
-// Store is a paid mutator transaction binding the contract method 0xb374012b.
-//
-// Solidity: function store(bytes encryptedValue) returns()
-func (_Contract *ContractSession) Store(encryptedValue []byte) (*types.Transaction, error) {
-	return _Contract.Contract.Store(&_Contract.TransactOpts, encryptedValue)
-}
-
-// Store is a paid mutator transaction binding the contract method 0xb374012b.
-//
-// Solidity: function store(bytes encryptedValue) returns()
-func (_Contract *ContractTransactorSession) Store(encryptedValue []byte) (*types.Transaction, error) {
-	return _Contract.Contract.Store(&_Contract.TransactOpts, encryptedValue)
+// Solidity: function add(uint32 value) view returns(uint32)
+func (_Contract *ContractCallerSession) Add(value uint32) (uint32, error) {
+	return _Contract.Contract.Add(&_Contract.CallOpts, value)
 }

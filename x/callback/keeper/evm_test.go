@@ -10,6 +10,6 @@ package keeper_test
 func (suite *KeeperTestSuite) TestCallIncoContract() {
 	suite.SetupTest() // reset
 
-	_, err := suite.app.CallbackKeeper.CallEvmAdd(suite.ctx, "", "0x0aF24F6e261F91836A57Eca0583DA9D3361253fB", "add", "5")
+	_, err := suite.app.CallbackKeeper.CallEvmAdd(suite.ctx, "", "0xaFe2AC71f883661477ab3c7D9dB2e36A5348eAf1", "add", "5")
 	suite.Require().NoError(err)
 }

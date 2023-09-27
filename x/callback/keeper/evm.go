@@ -100,7 +100,7 @@ func (k Keeper) CallEVMWithData(
 	// 	if err != nil {
 	// 		return nil, err
 	// 	}
-	// 	_ = gasRes.Gas * 5
+	// 	_ = gasRes.Gas
 	// }
 
 	msg := ethtypes.NewMessage(

@@ -140,6 +140,11 @@ func (k Keeper) InitGenesis(ctx sdk.Context, state types.GenesisState) {
 	}
 }
 
+// IncoResponse defines the uint32 value from the call response
+type IncoResponse struct {
+	Value uint32
+}
+
 func (k Keeper) CallEvmAdd(ctx sdk.Context, creator string, contractAddr string, funcName string, arg string) (*types.MsgCallEvmAddResponse, error) {
 	contract := types.GetContractAddress(contractAddr)
 	abi, err := ContractMetaData.GetAbi()
@@ -158,10 +163,9 @@ func (k Keeper) CallEvmAdd(ctx sdk.Context, creator string, contractAddr string,
 	if err != nil || len(resp.Ret) == 0 {
 		return &types.MsgCallEvmAddResponse{}, err
 	}
-
-	result, err := strconv.Atoi(string(resp.Ret))
-	if err != nil {
-		return &types.MsgCallEvmAddResponse{}, err
+	var unpackedRet IncoResponse
+	if err := abi.UnpackIntoInterface(&unpackedRet, "add", resp.Ret); err != nil {
+		return nil, err
 	}
 
 	ctx.EventManager().EmitEvents(
@@ -169,10 +173,10 @@ func (k Keeper) CallEvmAdd(ctx sdk.Context, creator string, contractAddr string,
 			sdk.NewEvent(
 				types.EventTypeEncryptAdd,
 				sdk.NewAttribute(sdk.AttributeKeySender, creator),
-				sdk.NewAttribute(types.EventTypeEncryptAddResult, fmt.Sprintf("%d", result)),
+				sdk.NewAttribute(types.EventTypeEncryptAddResult, fmt.Sprintf("%d", unpackedRet.Value)),
 			),
 		},
 	)
 
-	return &types.MsgCallEvmAddResponse{Result: (uint64)(result)}, nil
+	return &types.MsgCallEvmAddResponse{Result: (uint64)(unpackedRet.Value)}, nil
 }
