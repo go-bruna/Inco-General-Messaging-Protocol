@@ -31,7 +31,7 @@ var (
 
 // ContractMetaData contains all meta data concerning the Contract contract.
 var ContractMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[{\"internalType\":\"uint32\",\"name\":\"value\",\"type\":\"uint32\"}],\"name\":\"add\",\"outputs\":[{\"internalType\":\"uint32\",\"name\":\"\",\"type\":\"uint32\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[{\"internalType\":\"uint32\",\"name\":\"value\",\"type\":\"uint32\"}],\"name\":\"add\",\"outputs\":[{\"internalType\":\"uint32\",\"name\":\"\",\"type\":\"uint32\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"decryptStore\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"decryptView\",\"outputs\":[{\"internalType\":\"uint32\",\"name\":\"\",\"type\":\"uint32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"reveal\",\"outputs\":[{\"internalType\":\"uint32\",\"name\":\"\",\"type\":\"uint32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"encryptedValue\",\"type\":\"bytes\"}],\"name\":\"store\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"testValue\",\"outputs\":[{\"internalType\":\"euint32\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]",
 }
 
 // ContractABI is the input ABI used to generate the binding from.
@@ -180,12 +180,12 @@ func (_Contract *ContractTransactorRaw) Transact(opts *bind.TransactOpts, method
 	return _Contract.Contract.contract.Transact(opts, method, params...)
 }
 
-// Add is a free data retrieval call binding the contract method 0xcbe3a072.
+// DecryptView is a free data retrieval call binding the contract method 0x1dc0afe0.
 //
-// Solidity: function add(uint32 value) view returns(uint32)
-func (_Contract *ContractCaller) Add(opts *bind.CallOpts, value uint32) (uint32, error) {
+// Solidity: function decryptView() view returns(uint32)
+func (_Contract *ContractCaller) DecryptView(opts *bind.CallOpts) (uint32, error) {
 	var out []interface{}
-	err := _Contract.contract.Call(opts, &out, "add", value)
+	err := _Contract.contract.Call(opts, &out, "decryptView")
 
 	if err != nil {
 		return *new(uint32), err
@@ -197,16 +197,141 @@ func (_Contract *ContractCaller) Add(opts *bind.CallOpts, value uint32) (uint32,
 
 }
 
-// Add is a free data retrieval call binding the contract method 0xcbe3a072.
+// DecryptView is a free data retrieval call binding the contract method 0x1dc0afe0.
 //
-// Solidity: function add(uint32 value) view returns(uint32)
-func (_Contract *ContractSession) Add(value uint32) (uint32, error) {
-	return _Contract.Contract.Add(&_Contract.CallOpts, value)
+// Solidity: function decryptView() view returns(uint32)
+func (_Contract *ContractSession) DecryptView() (uint32, error) {
+	return _Contract.Contract.DecryptView(&_Contract.CallOpts)
 }
 
-// Add is a free data retrieval call binding the contract method 0xcbe3a072.
+// DecryptView is a free data retrieval call binding the contract method 0x1dc0afe0.
 //
-// Solidity: function add(uint32 value) view returns(uint32)
-func (_Contract *ContractCallerSession) Add(value uint32) (uint32, error) {
-	return _Contract.Contract.Add(&_Contract.CallOpts, value)
+// Solidity: function decryptView() view returns(uint32)
+func (_Contract *ContractCallerSession) DecryptView() (uint32, error) {
+	return _Contract.Contract.DecryptView(&_Contract.CallOpts)
+}
+
+// Reveal is a free data retrieval call binding the contract method 0xa475b5dd.
+//
+// Solidity: function reveal() view returns(uint32)
+func (_Contract *ContractCaller) Reveal(opts *bind.CallOpts) (uint32, error) {
+	var out []interface{}
+	err := _Contract.contract.Call(opts, &out, "reveal")
+
+	if err != nil {
+		return *new(uint32), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(uint32)).(*uint32)
+
+	return out0, err
+
+}
+
+// Reveal is a free data retrieval call binding the contract method 0xa475b5dd.
+//
+// Solidity: function reveal() view returns(uint32)
+func (_Contract *ContractSession) Reveal() (uint32, error) {
+	return _Contract.Contract.Reveal(&_Contract.CallOpts)
+}
+
+// Reveal is a free data retrieval call binding the contract method 0xa475b5dd.
+//
+// Solidity: function reveal() view returns(uint32)
+func (_Contract *ContractCallerSession) Reveal() (uint32, error) {
+	return _Contract.Contract.Reveal(&_Contract.CallOpts)
+}
+
+// TestValue is a free data retrieval call binding the contract method 0x8af5de72.
+//
+// Solidity: function testValue() view returns(uint256)
+func (_Contract *ContractCaller) TestValue(opts *bind.CallOpts) (*big.Int, error) {
+	var out []interface{}
+	err := _Contract.contract.Call(opts, &out, "testValue")
+
+	if err != nil {
+		return *new(*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
+
+	return out0, err
+
+}
+
+// TestValue is a free data retrieval call binding the contract method 0x8af5de72.
+//
+// Solidity: function testValue() view returns(uint256)
+func (_Contract *ContractSession) TestValue() (*big.Int, error) {
+	return _Contract.Contract.TestValue(&_Contract.CallOpts)
+}
+
+// TestValue is a free data retrieval call binding the contract method 0x8af5de72.
+//
+// Solidity: function testValue() view returns(uint256)
+func (_Contract *ContractCallerSession) TestValue() (*big.Int, error) {
+	return _Contract.Contract.TestValue(&_Contract.CallOpts)
+}
+
+// Add is a paid mutator transaction binding the contract method 0xcbe3a072.
+//
+// Solidity: function add(uint32 value) returns(uint32)
+func (_Contract *ContractTransactor) Add(opts *bind.TransactOpts, value uint32) (*types.Transaction, error) {
+	return _Contract.contract.Transact(opts, "add", value)
+}
+
+// Add is a paid mutator transaction binding the contract method 0xcbe3a072.
+//
+// Solidity: function add(uint32 value) returns(uint32)
+func (_Contract *ContractSession) Add(value uint32) (*types.Transaction, error) {
+	return _Contract.Contract.Add(&_Contract.TransactOpts, value)
+}
+
+// Add is a paid mutator transaction binding the contract method 0xcbe3a072.
+//
+// Solidity: function add(uint32 value) returns(uint32)
+func (_Contract *ContractTransactorSession) Add(value uint32) (*types.Transaction, error) {
+	return _Contract.Contract.Add(&_Contract.TransactOpts, value)
+}
+
+// DecryptStore is a paid mutator transaction binding the contract method 0x2f59d16b.
+//
+// Solidity: function decryptStore() returns()
+func (_Contract *ContractTransactor) DecryptStore(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _Contract.contract.Transact(opts, "decryptStore")
+}
+
+// DecryptStore is a paid mutator transaction binding the contract method 0x2f59d16b.
+//
+// Solidity: function decryptStore() returns()
+func (_Contract *ContractSession) DecryptStore() (*types.Transaction, error) {
+	return _Contract.Contract.DecryptStore(&_Contract.TransactOpts)
+}
+
+// DecryptStore is a paid mutator transaction binding the contract method 0x2f59d16b.
+//
+// Solidity: function decryptStore() returns()
+func (_Contract *ContractTransactorSession) DecryptStore() (*types.Transaction, error) {
+	return _Contract.Contract.DecryptStore(&_Contract.TransactOpts)
+}
+
+// Store is a paid mutator transaction binding the contract method 0xb374012b.
+//
+// Solidity: function store(bytes encryptedValue) returns()
+func (_Contract *ContractTransactor) Store(opts *bind.TransactOpts, encryptedValue []byte) (*types.Transaction, error) {
+	return _Contract.contract.Transact(opts, "store", encryptedValue)
+}
+
+// Store is a paid mutator transaction binding the contract method 0xb374012b.
+//
+// Solidity: function store(bytes encryptedValue) returns()
+func (_Contract *ContractSession) Store(encryptedValue []byte) (*types.Transaction, error) {
+	return _Contract.Contract.Store(&_Contract.TransactOpts, encryptedValue)
+}
+
+// Store is a paid mutator transaction binding the contract method 0xb374012b.
+//
+// Solidity: function store(bytes encryptedValue) returns()
+func (_Contract *ContractTransactorSession) Store(encryptedValue []byte) (*types.Transaction, error) {
+	return _Contract.Contract.Store(&_Contract.TransactOpts, encryptedValue)
 }

@@ -82,23 +82,24 @@ func (m *BlockInfo) GetChainId() string {
 	return ""
 }
 
-type WhoAmIResponse struct {
-	Account   string     `protobuf:"bytes,1,opt,name=Account,proto3" json:"Account,omitempty"`
-	BlockInfo *BlockInfo `protobuf:"bytes,2,opt,name=BlockInfo,proto3" json:"BlockInfo,omitempty"`
+type EncryptAddMessage struct {
+	ContractAddress string `protobuf:"bytes,1,opt,name=contract_address,json=contractAddress,proto3" json:"contract_address,omitempty"`
+	FunctionName    string `protobuf:"bytes,2,opt,name=function_name,json=functionName,proto3" json:"function_name,omitempty"`
+	Argument        string `protobuf:"bytes,4,opt,name=argument,proto3" json:"argument,omitempty"`
 }
 
-func (m *WhoAmIResponse) Reset()         { *m = WhoAmIResponse{} }
-func (m *WhoAmIResponse) String() string { return proto.CompactTextString(m) }
-func (*WhoAmIResponse) ProtoMessage()    {}
-func (*WhoAmIResponse) Descriptor() ([]byte, []int) {
+func (m *EncryptAddMessage) Reset()         { *m = EncryptAddMessage{} }
+func (m *EncryptAddMessage) String() string { return proto.CompactTextString(m) }
+func (*EncryptAddMessage) ProtoMessage()    {}
+func (*EncryptAddMessage) Descriptor() ([]byte, []int) {
 	return fileDescriptor_6cb2deef71e7e3ed, []int{1}
 }
-func (m *WhoAmIResponse) XXX_Unmarshal(b []byte) error {
+func (m *EncryptAddMessage) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *WhoAmIResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *EncryptAddMessage) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_WhoAmIResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_EncryptAddMessage.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -108,56 +109,112 @@ func (m *WhoAmIResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, erro
 		return b[:n], nil
 	}
 }
-func (m *WhoAmIResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_WhoAmIResponse.Merge(m, src)
+func (m *EncryptAddMessage) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EncryptAddMessage.Merge(m, src)
 }
-func (m *WhoAmIResponse) XXX_Size() int {
+func (m *EncryptAddMessage) XXX_Size() int {
 	return m.Size()
 }
-func (m *WhoAmIResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_WhoAmIResponse.DiscardUnknown(m)
+func (m *EncryptAddMessage) XXX_DiscardUnknown() {
+	xxx_messageInfo_EncryptAddMessage.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_WhoAmIResponse proto.InternalMessageInfo
+var xxx_messageInfo_EncryptAddMessage proto.InternalMessageInfo
 
-func (m *WhoAmIResponse) GetAccount() string {
+func (m *EncryptAddMessage) GetContractAddress() string {
 	if m != nil {
-		return m.Account
+		return m.ContractAddress
 	}
 	return ""
 }
 
-func (m *WhoAmIResponse) GetBlockInfo() *BlockInfo {
+func (m *EncryptAddMessage) GetFunctionName() string {
 	if m != nil {
-		return m.BlockInfo
+		return m.FunctionName
 	}
-	return nil
+	return ""
+}
+
+func (m *EncryptAddMessage) GetArgument() string {
+	if m != nil {
+		return m.Argument
+	}
+	return ""
+}
+
+type EncryptAddIResponse struct {
+	Value uint32 `protobuf:"varint,1,opt,name=value,proto3" json:"value,omitempty"`
+}
+
+func (m *EncryptAddIResponse) Reset()         { *m = EncryptAddIResponse{} }
+func (m *EncryptAddIResponse) String() string { return proto.CompactTextString(m) }
+func (*EncryptAddIResponse) ProtoMessage()    {}
+func (*EncryptAddIResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_6cb2deef71e7e3ed, []int{2}
+}
+func (m *EncryptAddIResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *EncryptAddIResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_EncryptAddIResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *EncryptAddIResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EncryptAddIResponse.Merge(m, src)
+}
+func (m *EncryptAddIResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *EncryptAddIResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_EncryptAddIResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EncryptAddIResponse proto.InternalMessageInfo
+
+func (m *EncryptAddIResponse) GetValue() uint32 {
+	if m != nil {
+		return m.Value
+	}
+	return 0
 }
 
 func init() {
 	proto.RegisterType((*BlockInfo)(nil), "evmos.v9.callback.BlockInfo")
-	proto.RegisterType((*WhoAmIResponse)(nil), "evmos.v9.callback.WhoAmIResponse")
+	proto.RegisterType((*EncryptAddMessage)(nil), "evmos.v9.callback.EncryptAddMessage")
+	proto.RegisterType((*EncryptAddIResponse)(nil), "evmos.v9.callback.EncryptAddIResponse")
 }
 
 func init() { proto.RegisterFile("callback/data.proto", fileDescriptor_6cb2deef71e7e3ed) }
 
 var fileDescriptor_6cb2deef71e7e3ed = []byte{
-	// 235 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x4e, 0x4e, 0xcc, 0xc9,
-	0x49, 0x4a, 0x4c, 0xce, 0xd6, 0x4f, 0x49, 0x2c, 0x49, 0xd4, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17,
-	0x12, 0x4c, 0x2d, 0xcb, 0xcd, 0x2f, 0xd6, 0x2b, 0xb3, 0xd4, 0x83, 0xc9, 0x2a, 0x05, 0x72, 0x71,
-	0x3a, 0xe5, 0xe4, 0x27, 0x67, 0x7b, 0xe6, 0xa5, 0xe5, 0x0b, 0x89, 0x71, 0xb1, 0x79, 0xa4, 0x66,
-	0xa6, 0x67, 0x94, 0x48, 0x30, 0x2a, 0x30, 0x6a, 0xb0, 0x04, 0x41, 0x79, 0x42, 0x42, 0x5c, 0x2c,
-	0x21, 0x99, 0xb9, 0xa9, 0x12, 0x4c, 0x60, 0x51, 0x30, 0x5b, 0x48, 0x82, 0x8b, 0xdd, 0x39, 0x23,
-	0x31, 0x33, 0xcf, 0x33, 0x45, 0x82, 0x59, 0x81, 0x51, 0x83, 0x33, 0x08, 0xc6, 0x55, 0x4a, 0xe3,
-	0xe2, 0x0b, 0xcf, 0xc8, 0x77, 0xcc, 0xf5, 0x0c, 0x4a, 0x2d, 0x2e, 0xc8, 0xcf, 0x2b, 0x06, 0xab,
-	0x75, 0x4c, 0x4e, 0xce, 0x2f, 0xcd, 0x83, 0x18, 0xcc, 0x19, 0x04, 0xe3, 0x0a, 0x59, 0x21, 0x59,
-	0x0f, 0x36, 0x9e, 0xdb, 0x48, 0x46, 0x0f, 0xc3, 0x95, 0x7a, 0x70, 0x35, 0x41, 0x08, 0xe5, 0x4e,
-	0x2e, 0x27, 0x1e, 0xc9, 0x31, 0x5e, 0x78, 0x24, 0xc7, 0xf8, 0xe0, 0x91, 0x1c, 0xe3, 0x84, 0xc7,
-	0x72, 0x0c, 0x17, 0x1e, 0xcb, 0x31, 0xdc, 0x78, 0x2c, 0xc7, 0x10, 0xa5, 0x95, 0x9e, 0x59, 0x92,
-	0x51, 0x9a, 0xa4, 0x97, 0x9c, 0x9f, 0xab, 0x0f, 0x36, 0x0c, 0x4a, 0x96, 0x59, 0xea, 0x57, 0xe8,
-	0xc3, 0x03, 0xa6, 0xa4, 0xb2, 0x20, 0xb5, 0x38, 0x89, 0x0d, 0x1c, 0x34, 0xc6, 0x80, 0x00, 0x00,
-	0x00, 0xff, 0xff, 0x0a, 0x3f, 0xc2, 0x47, 0x31, 0x01, 0x00, 0x00,
+	// 304 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x44, 0x90, 0xb1, 0x4e, 0xf3, 0x30,
+	0x14, 0x85, 0x9b, 0xff, 0x2f, 0x85, 0x58, 0x54, 0x50, 0x17, 0xa1, 0x88, 0x21, 0xaa, 0xca, 0x52,
+	0x40, 0x4a, 0x06, 0xa6, 0x8e, 0x2d, 0x20, 0xd1, 0x01, 0x24, 0x2c, 0x26, 0x96, 0xea, 0xd6, 0xbe,
+	0x4d, 0xa3, 0x26, 0x76, 0x14, 0x3b, 0x11, 0x9d, 0x78, 0x05, 0x1e, 0x8b, 0xb1, 0x23, 0x23, 0x6a,
+	0x5f, 0x04, 0xc9, 0x4d, 0xca, 0x62, 0xf9, 0xfb, 0xce, 0x70, 0xae, 0x0e, 0xe9, 0x72, 0x48, 0x92,
+	0x19, 0xf0, 0x65, 0x28, 0xc0, 0x40, 0x90, 0xe5, 0xca, 0x28, 0xda, 0xc1, 0x32, 0x55, 0x3a, 0x28,
+	0x87, 0x41, 0x9d, 0xf6, 0x5f, 0x88, 0x3b, 0x4e, 0x14, 0x5f, 0x4e, 0xe4, 0x5c, 0xd1, 0x73, 0xd2,
+	0x7a, 0xc4, 0x38, 0x5a, 0x18, 0xcf, 0xe9, 0x39, 0x83, 0x26, 0xab, 0x88, 0x52, 0xd2, 0x7c, 0x8d,
+	0x53, 0xf4, 0xfe, 0x59, 0x6b, 0xff, 0xd4, 0x23, 0x87, 0x77, 0x0b, 0x88, 0xe5, 0x44, 0x78, 0xff,
+	0x7b, 0xce, 0xc0, 0x65, 0x35, 0xf6, 0x3f, 0x48, 0xe7, 0x41, 0xf2, 0x7c, 0x95, 0x99, 0x91, 0x10,
+	0x4f, 0xa8, 0x35, 0x44, 0x48, 0xaf, 0xc8, 0x29, 0x57, 0xd2, 0xe4, 0xc0, 0xcd, 0x14, 0x84, 0xc8,
+	0x51, 0x6b, 0x5b, 0xe2, 0xb2, 0x93, 0xda, 0x8f, 0x76, 0x9a, 0x5e, 0x92, 0xf6, 0xbc, 0x90, 0xdc,
+	0xc4, 0x4a, 0x4e, 0x25, 0x54, 0xb5, 0x2e, 0x3b, 0xae, 0xe5, 0x33, 0xa4, 0x48, 0x2f, 0xc8, 0x11,
+	0xe4, 0x51, 0x91, 0xa2, 0x34, 0x5e, 0xd3, 0xe6, 0x7b, 0xee, 0xdf, 0x90, 0xee, 0xdf, 0x01, 0x13,
+	0x86, 0x3a, 0x53, 0x52, 0x23, 0x3d, 0x23, 0x07, 0x25, 0x24, 0x05, 0xda, 0xde, 0x36, 0xdb, 0xc1,
+	0xf8, 0xfe, 0x6b, 0xe3, 0x3b, 0xeb, 0x8d, 0xef, 0xfc, 0x6c, 0x7c, 0xe7, 0x73, 0xeb, 0x37, 0xd6,
+	0x5b, 0xbf, 0xf1, 0xbd, 0xf5, 0x1b, 0x6f, 0xd7, 0x51, 0x6c, 0x16, 0xc5, 0x2c, 0xe0, 0x2a, 0x0d,
+	0xed, 0x70, 0xd5, 0x5b, 0x0e, 0xc3, 0xf7, 0x70, 0x3f, 0xaf, 0x59, 0x65, 0xa8, 0x67, 0x2d, 0x3b,
+	0xf0, 0xed, 0x6f, 0x00, 0x00, 0x00, 0xff, 0xff, 0x66, 0xe5, 0x3f, 0xbf, 0x77, 0x01, 0x00, 0x00,
 }
 
 func (m *BlockInfo) Marshal() (dAtA []byte, err error) {
@@ -200,7 +257,7 @@ func (m *BlockInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *WhoAmIResponse) Marshal() (dAtA []byte, err error) {
+func (m *EncryptAddMessage) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -210,34 +267,64 @@ func (m *WhoAmIResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *WhoAmIResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *EncryptAddMessage) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *WhoAmIResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *EncryptAddMessage) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.BlockInfo != nil {
-		{
-			size, err := m.BlockInfo.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintData(dAtA, i, uint64(size))
-		}
+	if len(m.Argument) > 0 {
+		i -= len(m.Argument)
+		copy(dAtA[i:], m.Argument)
+		i = encodeVarintData(dAtA, i, uint64(len(m.Argument)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.FunctionName) > 0 {
+		i -= len(m.FunctionName)
+		copy(dAtA[i:], m.FunctionName)
+		i = encodeVarintData(dAtA, i, uint64(len(m.FunctionName)))
 		i--
 		dAtA[i] = 0x12
 	}
-	if len(m.Account) > 0 {
-		i -= len(m.Account)
-		copy(dAtA[i:], m.Account)
-		i = encodeVarintData(dAtA, i, uint64(len(m.Account)))
+	if len(m.ContractAddress) > 0 {
+		i -= len(m.ContractAddress)
+		copy(dAtA[i:], m.ContractAddress)
+		i = encodeVarintData(dAtA, i, uint64(len(m.ContractAddress)))
 		i--
 		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *EncryptAddIResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *EncryptAddIResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *EncryptAddIResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Value != 0 {
+		i = encodeVarintData(dAtA, i, uint64(m.Value))
+		i--
+		dAtA[i] = 0x8
 	}
 	return len(dAtA) - i, nil
 }
@@ -272,19 +359,35 @@ func (m *BlockInfo) Size() (n int) {
 	return n
 }
 
-func (m *WhoAmIResponse) Size() (n int) {
+func (m *EncryptAddMessage) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	l = len(m.Account)
+	l = len(m.ContractAddress)
 	if l > 0 {
 		n += 1 + l + sovData(uint64(l))
 	}
-	if m.BlockInfo != nil {
-		l = m.BlockInfo.Size()
+	l = len(m.FunctionName)
+	if l > 0 {
 		n += 1 + l + sovData(uint64(l))
+	}
+	l = len(m.Argument)
+	if l > 0 {
+		n += 1 + l + sovData(uint64(l))
+	}
+	return n
+}
+
+func (m *EncryptAddIResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Value != 0 {
+		n += 1 + sovData(uint64(m.Value))
 	}
 	return n
 }
@@ -415,7 +518,7 @@ func (m *BlockInfo) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *WhoAmIResponse) Unmarshal(dAtA []byte) error {
+func (m *EncryptAddMessage) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -438,15 +541,15 @@ func (m *WhoAmIResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: WhoAmIResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: EncryptAddMessage: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: WhoAmIResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: EncryptAddMessage: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Account", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ContractAddress", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -474,13 +577,13 @@ func (m *WhoAmIResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Account = string(dAtA[iNdEx:postIndex])
+			m.ContractAddress = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field BlockInfo", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field FunctionName", wireType)
 			}
-			var msglen int
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowData
@@ -490,28 +593,125 @@ func (m *WhoAmIResponse) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				msglen |= int(b&0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			if msglen < 0 {
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
 				return ErrInvalidLengthData
 			}
-			postIndex := iNdEx + msglen
+			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
 				return ErrInvalidLengthData
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.BlockInfo == nil {
-				m.BlockInfo = &BlockInfo{}
+			m.FunctionName = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Argument", wireType)
 			}
-			if err := m.BlockInfo.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowData
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthData
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthData
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Argument = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipData(dAtA[iNdEx:])
+			if err != nil {
 				return err
 			}
-			iNdEx = postIndex
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthData
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *EncryptAddIResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowData
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: EncryptAddIResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: EncryptAddIResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Value", wireType)
+			}
+			m.Value = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowData
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Value |= uint32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipData(dAtA[iNdEx:])

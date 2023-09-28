@@ -9,8 +9,12 @@ message BlockInfo {
 	string ChainId  = 3;
 }
   
-message WhoAmIResponse {
-	string Account      = 1;
-	BlockInfo BlockInfo = 2;
+message EncryptAddMessage {
+	string contract_address      = 1;
+	string function_name = 2;
+	string argument = 4;
 }
-  
+
+message EncryptAddIResponse {
+	uint32 value     = 1;
+}

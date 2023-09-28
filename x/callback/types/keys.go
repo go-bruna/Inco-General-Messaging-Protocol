@@ -22,7 +22,7 @@ const (
 	MemStoreKey = "mem_callback"
 
 	// Version defines the current version the IBC module supports
-	Version = "pio-ibc-example-v1"
+	Version = "inco-ibc-callback-poc"
 
 	// PortID is the default port id that module binds to
 	PortID = "callback"
