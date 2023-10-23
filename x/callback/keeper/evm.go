@@ -64,6 +64,14 @@ func (k Keeper) CallEVM(
 
 	resp, err := k.CallEVMWithData(ctx, from, &contract, data, commit)
 	if err != nil {
+		ctx.EventManager().EmitEvents(
+			sdk.Events{
+				sdk.NewEvent(
+					"EVM",
+					sdk.NewAttribute("error content", err.Error()),
+				),
+			},
+		)
 		return nil, sdkerrors.Wrapf(err, "contract call failed: method '%s', contract '%s'", method, contract)
 	}
 	return resp, nil
@@ -119,10 +127,14 @@ func (k Keeper) CallEVMWithData(
 
 	res, err := k.evmKeeper.ApplyMessage(ctx, msg, evmtypes.NewNoOpTracer(), commit)
 	if err != nil {
-		return nil, err
+		k.Logger(ctx).Info("Apply Message result: " + err.Error())
+		return nil, sdkerrors.Wrap(evmtypes.ErrVMExecution, err.Error())
+
 	}
 
 	if res.Failed() {
+		k.Logger(ctx).Info("evmtypes.ErrVMExecution: " + res.VmError)
+
 		return nil, sdkerrors.Wrap(evmtypes.ErrVMExecution, res.VmError)
 	}
 
